@@ -1,5 +1,5 @@
-#ifndef Webshop_h
-#define Webshop_h
+#ifndef webshop_h
+#define webshop_h
 
 typedef struct {
   char *name;
