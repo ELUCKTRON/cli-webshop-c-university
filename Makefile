@@ -1,29 +1,39 @@
 # Compiler
 CC = gcc
+WIN_CC = x86_64-w64-mingw32-gcc
 
-# Output directory and target binary
+# Directories
+SRC_DIR = src
 BUILD_DIR = build
-TARGET = $(BUILD_DIR)/webshop
 
 # Source and header files
-SRC = src/webshop1.c src/webshop2.c
-HEADERS = src/webshop.h
+SRC = $(SRC_DIR)/webshop1.c $(SRC_DIR)/webshop2.c
+HEADERS = $(SRC_DIR)/webshop.h
 
 # Compiler flags
 CFLAGS = -Wall -Wextra -std=c11
 
-# Default rule
-all: $(TARGET)
+# Targets
+LINUX_TARGET = $(BUILD_DIR)/webshop
+WIN_TARGET = $(BUILD_DIR)/webshop.exe
 
-# Ensure build directory and build the executable
-$(TARGET): $(SRC) $(HEADERS)
+# Default target (Linux)
+all: $(LINUX_TARGET)
+
+# Linux build
+$(LINUX_TARGET): $(SRC) $(HEADERS)
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+	$(CC) $(CFLAGS) $(SRC) -o $(LINUX_TARGET)
 
-# Run the program
-run: $(TARGET)
-	./$(TARGET)
+# Windows build
+windows: $(SRC) $(HEADERS)
+	mkdir -p $(BUILD_DIR)
+	$(WIN_CC) $(CFLAGS) $(SRC) -o $(WIN_TARGET)
 
-# Clean up
+# Run the Linux binary
+run: $(LINUX_TARGET)
+	./$(LINUX_TARGET)
+
+# Clean build outputs
 clean:
 	rm -rf $(BUILD_DIR)

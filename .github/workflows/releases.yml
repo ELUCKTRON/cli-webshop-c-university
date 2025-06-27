@@ -3,7 +3,7 @@ name: Release Webshop
 on:
   push:
     tags:
-      - "v*" # Triggers on version tags like v1.0, v2.1, etc.
+      - 'v*'
 
 jobs:
   build-linux:
@@ -17,17 +17,16 @@ jobs:
       - name: Install build tools
         run: sudo apt-get update && sudo apt-get install -y build-essential
 
-      - name: Build Webshop for Linux
+      - name: Build Linux binary using Makefile
         run: make
 
-      - name: Rename binary
-        run: mv build/webshop webshop-linux
+      - name: Rename binary for release
+        run: mv build/webshop build/webshop-linux
 
-      - name: Upload Linux binary to Release
+      - name: Upload Linux binary
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            webshop-linux
+          files: build/webshop-linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -42,13 +41,12 @@ jobs:
       - name: Install mingw-w64
         run: sudo apt-get update && sudo apt-get install -y mingw-w64
 
-      - name: Build Webshop for Windows
-        run: x86_64-w64-mingw32-gcc -Wall -Wextra -std=c11 Webshop1.c Webshop2.c -o webshop.exe
+      - name: Build Windows binary using Makefile
+        run: make windows
 
-      - name: Upload Windows binary to Release
+      - name: Upload Windows binary
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            build/webshop.exe
+          files: build/webshop.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
