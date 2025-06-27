@@ -3,7 +3,7 @@ name: Release Webshop
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'  # Triggers on version tags like v1.0
 
 jobs:
   build-linux:
@@ -20,10 +20,15 @@ jobs:
       - name: Build Linux binary using Makefile
         run: make
 
-      - name: Rename binary for release
+      - name: Rename Linux binary for release
         run: mv build/webshop build/webshop-linux
 
-      - name: Upload Linux binary
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+
+      - name: Upload Linux binary to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: build/webshop-linux
@@ -44,7 +49,12 @@ jobs:
       - name: Build Windows binary using Makefile
         run: make windows
 
-      - name: Upload Windows binary
+      - name: Create GitHub Release (if not already created)
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+
+      - name: Upload Windows binary to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: build/webshop.exe
