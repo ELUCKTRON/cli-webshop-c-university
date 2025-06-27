@@ -3,11 +3,11 @@ name: Release Webshop
 on:
   push:
     tags:
-      - 'v*'  # Triggers on version tags like v1.0
+      - 'v*'  # Trigger on version tags like v1.0, v1.1
 
 jobs:
   build-linux:
-    name: Build for Linux
+    name: Build and Release for Linux
     runs-on: ubuntu-latest
 
     steps:
@@ -23,20 +23,20 @@ jobs:
       - name: Rename Linux binary for release
         run: mv build/webshop build/webshop-linux
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release (if needed)
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ github.ref_name }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
 
       - name: Upload Linux binary to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: build/webshop-linux
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
 
   build-windows:
-    name: Build for Windows
+    name: Build and Release for Windows
     runs-on: ubuntu-latest
 
     steps:
@@ -49,14 +49,8 @@ jobs:
       - name: Build Windows binary using Makefile
         run: make windows
 
-      - name: Create GitHub Release (if not already created)
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ github.ref_name }}
-
       - name: Upload Windows binary to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: build/webshop.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
