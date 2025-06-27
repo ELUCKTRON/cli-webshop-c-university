@@ -6,8 +6,8 @@ BUILD_DIR = build
 TARGET = $(BUILD_DIR)/webshop
 
 # Source and header files
-SRC = Webshop1.c Webshop2.c
-HEADERS = Webshop.h
+SRC = src/webshop1.c src/webshop2.c
+HEADERS = src/webshop.h
 
 # Compiler flags
 CFLAGS = -Wall -Wextra -std=c11
