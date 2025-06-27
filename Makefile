@@ -1,26 +1,29 @@
 # Compiler
 CC = gcc
 
-# Executable name
-TARGET = build/webshop
+# Output directory and target binary
+BUILD_DIR = build
+TARGET = $(BUILD_DIR)/webshop
 
-# Source files
-SRC = webshop1.c webshop2.c
-
-# Header files
-HEADERS = webshop.h
+# Source and header files
+SRC = Webshop1.c Webshop2.c
+HEADERS = Webshop.h
 
 # Compiler flags
 CFLAGS = -Wall -Wextra -std=c11
 
-# Default build target
+# Default rule
+all: $(TARGET)
+
+# Ensure build directory and build the executable
 $(TARGET): $(SRC) $(HEADERS)
+	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
 
-# Run the program after building
+# Run the program
 run: $(TARGET)
 	./$(TARGET)
 
-# Clean up compiled files
+# Clean up
 clean:
-	rm -f $(TARGET)
+	rm -rf $(BUILD_DIR)
