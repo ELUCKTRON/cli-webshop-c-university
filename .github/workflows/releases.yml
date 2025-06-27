@@ -21,7 +21,7 @@ jobs:
         run: make
 
       - name: Rename binary
-        run: mv webshop webshop-linux
+        run: mv build/webshop webshop-linux
 
       - name: Upload Linux binary to Release
         uses: softprops/action-gh-release@v1
@@ -49,6 +49,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            webshop.exe
+            build/webshop.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
